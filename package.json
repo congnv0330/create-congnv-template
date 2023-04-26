@@ -25,9 +25,7 @@
     "dist",
     "index.js"
   ],
-  "bin": {
-    "create-congnv-template": "index.js"
-  },
+  "bin": "./index.js",
   "scripts": {
     "dev": "unbuild --stub",
     "build": "unbuild",
