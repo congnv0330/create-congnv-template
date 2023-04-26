@@ -7,7 +7,7 @@
 With NPM:
 
 ```bash
-$ npm create-congnv-template@latest
+$ npm create @congnv0330/congnv-template@latest
 ```
 
 ## Develop
