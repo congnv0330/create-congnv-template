@@ -1,9 +1,8 @@
 # CONGNV TEMPLATE
 
 ## Run
-> **Compatibility:**
-> Requires [Node.js](https://nodejs.org/en/) version 16+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.
-> Requires Git installed.
+> **Requires** [Node.js](https://nodejs.org/en/) version 16+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.
+> **Requires** [Git](https://git-scm.com/) installed.
 
 With NPM:
 
