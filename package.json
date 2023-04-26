@@ -26,8 +26,7 @@
     "index.js"
   ],
   "bin": {
-    "create-vite": "index.js",
-    "cva": "index.js"
+    "create-congnv-template": "index.js"
   },
   "scripts": {
     "dev": "unbuild --stub",
