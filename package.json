@@ -1,8 +1,22 @@
 {
-  "name": "congnv-template",
+  "name": "@congnv0330/congnv-template",
   "version": "0.0.1",
   "description": "Quick generate congnv public template",
-  "author": "congnv",
+  "author": "congnv0330",
+  "license": "ISC",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/congnv0330/congnv-template.git"
+  },
+  "keywords": [
+    "congnv",
+    "template"
+  ],
+  "bugs": {
+    "url": "https://github.com/congnv0330/congnv-template/issues"
+  },
+  "homepage": "https://github.com/congnv0330/congnv-template#readme",
   "engines": {
     "node": ">=16.0.0"
   },
@@ -26,9 +40,7 @@
     "kolorist": "^1.8.0",
     "minimist": "^1.2.8",
     "prompts": "^2.4.2",
-    "unbuild": "^1.2.1"
-  },
-  "dependencies": {
+    "unbuild": "^1.2.1",
     "octokit": "^2.0.14"
   }
 }
