@@ -39,20 +39,6 @@ const toValidPackageName = (projectName: string): string => {
     .replace(/[^a-z\d\-~]+/g, '-')
 };
 
-const pkgFromUserAgent = (userAgent: string | undefined) => {
-  if (!userAgent) {
-    return undefined
-  };
-
-  const pkgSpec = userAgent.split(' ')[0];
-  const pkgSpecArr = pkgSpec.split('/');
-
-  return {
-    name: pkgSpecArr[0],
-    version: pkgSpecArr[1],
-  }
-};
-
 interface ITemplate {
   name: string;
   description: string | null;
@@ -191,10 +177,6 @@ const init = async () => {
     throw new Error(red('✖') + ' Something error. Template not available now.');
   }
 
-  const pkgInfo = pkgFromUserAgent(process.env.npm_config_user_agent);
-
-  const pkgManager = pkgInfo ? pkgInfo.name : 'npm';
-
   const write = (file: string, content: string): void => {
     const targetPath = path.join(root, file)
     fs.writeFileSync(targetPath, content);
@@ -227,26 +209,7 @@ const init = async () => {
     fs.rmSync(path.join(root, 'package-lock.json'), { force: true });
     fs.rmSync(path.join(root, 'yarn.lock'), { force: true });
 
-    const cdProjectName = path.relative(cwd, root);
-
-    console.log(`Done. Now run:\n`);
-
-    if (root !== cwd) {
-      console.log(
-        `  cd ${
-          cdProjectName.includes(' ') ? `"${cdProjectName}"` : cdProjectName
-        }`,
-      )
-    }
-
-    switch (pkgManager) {
-      case 'yarn':
-        console.log('  yarn\n')
-        break
-      default:
-        console.log(`  ${pkgManager} install\n`)
-        break
-    }
+    console.log(`Done.\n`);
   });
 }
 
