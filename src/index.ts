@@ -3,8 +3,9 @@ import path from 'node:path';
 import childProcess from 'node:child_process';
 import minimist from 'minimist';
 import prompts from 'prompts';
-import { red, reset } from 'kolorist';
+import { red, reset, green, white } from 'kolorist';
 import { Octokit } from 'octokit';
+import ora from 'ora';
 
 const octokit = new Octokit();
 
@@ -46,9 +47,12 @@ interface ITemplate {
 }
 
 const fetchTemplateRepositories = async (): Promise<ITemplate[]> => {
+  const throbber = ora('Fetching template...');
   const templates: ITemplate[] = [];
 
   let hasMore: boolean = true;
+
+  throbber.start();
 
   while (hasMore) {
     const response = await octokit.request('GET /search/repositories', {
@@ -68,6 +72,8 @@ const fetchTemplateRepositories = async (): Promise<ITemplate[]> => {
 
     hasMore = templates.length < response.data.total_count;
   }
+
+  throbber.stop();
 
   return templates;
 }
@@ -185,10 +191,16 @@ const init = async () => {
     fs.writeFileSync(targetPath, content);
   }
 
-  console.log(`\nClone project template in ${root}...\n`);
+  const throbber = ora(`Clone project template in ${root}...`);
+
+  throbber.start();
 
   // Clone template repositories
   childProcess.exec(`git clone ${selectedTemplete.clone_url} ${targetDir}`, (error, stdout, stderr) => {
+    throbber.stopAndPersist({
+      symbol: green('✔'),
+    });
+
     if (error) {
       console.error(error);
       return;
@@ -212,7 +224,7 @@ const init = async () => {
     fs.rmSync(path.join(root, 'package-lock.json'), { force: true });
     fs.rmSync(path.join(root, 'yarn.lock'), { force: true });
 
-    console.log(`Done.\n`);
+    console.log(green('✔') + white(' Done.'));
   });
 }
 
