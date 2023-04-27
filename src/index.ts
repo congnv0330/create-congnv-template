@@ -106,13 +106,16 @@ const init = async () => {
         },
         {
           type: () =>
-            !fs.existsSync(targetDir) || isEmpty(targetDir) ? null : 'confirm',
+            !fs.existsSync(targetDir) || isEmpty(targetDir) ? null : 'toggle',
           name: 'overwrite',
           message: () =>
             (targetDir === '.'
               ? 'Current directory'
               : `Target directory "${targetDir}"`) +
             ` is not empty. Remove existing files and continue?`,
+          initial: true,
+          active: 'Yes',
+          inactive: 'No',
         },
         {
           type: (_, { overwrite }: { overwrite?: boolean }) => {
