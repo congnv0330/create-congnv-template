@@ -1,6 +1,6 @@
 {
   "name": "@congnv0330/create-template",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Quick generate congnv public template",
   "author": "congnv0330",
   "license": "ISC",
@@ -38,7 +38,6 @@
     "kolorist": "^1.8.0",
     "minimist": "^1.2.8",
     "octokit": "^2.0.14",
-    "ora": "^6.3.0",
     "prompts": "^2.4.2",
     "unbuild": "^1.2.1"
   }

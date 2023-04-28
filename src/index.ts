@@ -4,7 +4,6 @@ import childProcess from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { Octokit } from 'octokit';
-import ora from 'ora';
 import prompts from 'prompts';
 
 const octokit = new Octokit();
@@ -47,12 +46,9 @@ interface ITemplate {
 }
 
 const fetchTemplateRepositories = async (): Promise<ITemplate[]> => {
-  const throbber = ora('Fetching template...');
   const templates: ITemplate[] = [];
 
   let hasMore: boolean = true;
-
-  throbber.start();
 
   while (hasMore) {
     const response = await octokit.request('GET /search/repositories', {
@@ -73,14 +69,13 @@ const fetchTemplateRepositories = async (): Promise<ITemplate[]> => {
     hasMore = templates.length < response.data.total_count;
   }
 
-  throbber.stop();
-
   return templates;
 };
 
 const defaultTargetDir: string = 'my-project';
 
 const init = async () => {
+  console.log('Fetching template...\n');
   const repoTemplates = await fetchTemplateRepositories();
 
   const argTargetDir = formatTargetDir(argv._[0]);
@@ -194,18 +189,12 @@ const init = async () => {
     fs.writeFileSync(targetPath, content);
   };
 
-  const throbber = ora(`Clone project template in ${root}...`);
-
-  throbber.start();
+  console.log(`\nClone project template in ${root}...\n`);
 
   // Clone template repositories
   childProcess.exec(
     `git clone ${selectedTemplete.clone_url} ${targetDir}`,
     (error, stdout, stderr) => {
-      throbber.stopAndPersist({
-        symbol: green('✔'),
-      });
-
       if (error) {
         console.error(error);
         return;
