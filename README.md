@@ -10,6 +10,12 @@ With NPM:
 $ npm create @congnv0330/template@latest
 ```
 
+With YARN:
+
+```bash
+$ yarn create @congnv0330/template
+```
+
 ## Develop
 
 Install package
