@@ -1,17 +1,17 @@
+import { green, red, reset, white } from 'kolorist';
+import minimist from 'minimist';
+import childProcess from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
-import childProcess from 'node:child_process';
-import minimist from 'minimist';
-import prompts from 'prompts';
-import { red, reset, green, white } from 'kolorist';
 import { Octokit } from 'octokit';
 import ora from 'ora';
+import prompts from 'prompts';
 
 const octokit = new Octokit();
 
 const argv = minimist<{
-  t?: string
-  template?: string
+  t?: string;
+  template?: string;
 }>(process.argv.slice(2), { string: ['_'] });
 
 const cwd = process.cwd();
@@ -21,14 +21,14 @@ const isEmpty = (path: string): boolean => {
   return files.length === 0 || (files.length === 1 && files[0] === '.git');
 };
 
-const formatTargetDir = (targetDir: string | undefined): string|undefined => {
+const formatTargetDir = (targetDir: string | undefined): string | undefined => {
   return targetDir?.trim().replace(/\/+$/g, '');
-}
+};
 
 const isValidPackageName = (projectName: string): boolean => {
   return /^(?:@[a-z\d\-*~][a-z\d\-*._~]*\/)?[a-z\d\-~][a-z\d\-._~]*$/.test(
     projectName,
-  )
+  );
 };
 
 const toValidPackageName = (projectName: string): string => {
@@ -37,7 +37,7 @@ const toValidPackageName = (projectName: string): string => {
     .toLowerCase()
     .replace(/\s+/g, '-')
     .replace(/^[._]/, '')
-    .replace(/[^a-z\d\-~]+/g, '-')
+    .replace(/[^a-z\d\-~]+/g, '-');
 };
 
 interface ITemplate {
@@ -57,9 +57,9 @@ const fetchTemplateRepositories = async (): Promise<ITemplate[]> => {
   while (hasMore) {
     const response = await octokit.request('GET /search/repositories', {
       headers: {
-        'X-GitHub-Api-Version': '2022-11-28'
+        'X-GitHub-Api-Version': '2022-11-28',
       },
-      q: 'template:true user:congnv0330'
+      q: 'template:true user:congnv0330',
     });
 
     const items: ITemplate[] = response.data.items.map((repo) => ({
@@ -76,7 +76,7 @@ const fetchTemplateRepositories = async (): Promise<ITemplate[]> => {
   throbber.stop();
 
   return templates;
-}
+};
 
 const defaultTargetDir: string = 'my-project';
 
@@ -96,7 +96,9 @@ const init = async () => {
   const getProjectName = () =>
     targetDir === '.' ? path.basename(path.resolve()) : targetDir;
 
-  let result: prompts.Answers<'projectName' | 'packageName' | 'template' | 'overwrite'>;
+  let result: prompts.Answers<
+    'projectName' | 'packageName' | 'template' | 'overwrite'
+  >;
 
   try {
     result = await prompts(
@@ -107,7 +109,7 @@ const init = async () => {
           message: reset('Project name:'),
           initial: defaultTargetDir,
           onState: (state) => {
-            targetDir = formatTargetDir(state.value) || defaultTargetDir
+            targetDir = formatTargetDir(state.value) || defaultTargetDir;
           },
         },
         {
@@ -126,9 +128,10 @@ const init = async () => {
         {
           type: (_, { overwrite }: { overwrite?: boolean }) => {
             if (overwrite === false) {
-              throw new Error(red('✖') + ' Operation cancelled')
+              throw new Error(red('✖') + ' Operation cancelled');
             }
-            return null
+
+            return null;
           },
           name: 'overwriteChecker',
         },
@@ -155,13 +158,13 @@ const init = async () => {
               title: template.name,
               description: template.description ?? '...',
               value: template,
-            }
+            };
           }),
         },
       ],
       {
         onCancel: () => {
-          throw new Error(red('✖') + ' Operation cancelled')
+          throw new Error(red('✖') + ' Operation cancelled');
         },
       },
     );
@@ -187,46 +190,47 @@ const init = async () => {
   }
 
   const write = (file: string, content: string): void => {
-    const targetPath = path.join(root, file)
+    const targetPath = path.join(root, file);
     fs.writeFileSync(targetPath, content);
-  }
+  };
 
   const throbber = ora(`Clone project template in ${root}...`);
 
   throbber.start();
 
   // Clone template repositories
-  childProcess.exec(`git clone ${selectedTemplete.clone_url} ${targetDir}`, (error, stdout, stderr) => {
-    throbber.stopAndPersist({
-      symbol: green('✔'),
-    });
+  childProcess.exec(
+    `git clone ${selectedTemplete.clone_url} ${targetDir}`,
+    (error, stdout, stderr) => {
+      throbber.stopAndPersist({
+        symbol: green('✔'),
+      });
 
-    if (error) {
-      console.error(error);
-      return;
-    }
+      if (error) {
+        console.error(error);
+        return;
+      }
 
-    const pkgDir = path.join(root, `package.json`);
+      const pkgDir = path.join(root, `package.json`);
 
-    // Rename package.json name if exists
-    if (fs.existsSync(pkgDir)) {
-      const pkg = JSON.parse(
-        fs.readFileSync(pkgDir, 'utf-8'),
-      );
+      // Rename package.json name if exists
+      if (fs.existsSync(pkgDir)) {
+        const pkg = JSON.parse(fs.readFileSync(pkgDir, 'utf-8'));
 
-      pkg.name = packageName || getProjectName();
+        pkg.name = packageName || getProjectName();
 
-      write('package.json', JSON.stringify(pkg, null, 2) + '\n');
-    }
+        write('package.json', JSON.stringify(pkg, null, 2) + '\n');
+      }
 
-    // Clean
-    fs.rmSync(path.join(root, '.git'), { recursive: true, force: true });
-    fs.rmSync(path.join(root, 'package-lock.json'), { force: true });
-    fs.rmSync(path.join(root, 'yarn.lock'), { force: true });
+      // Clean
+      fs.rmSync(path.join(root, '.git'), { recursive: true, force: true });
+      fs.rmSync(path.join(root, 'package-lock.json'), { force: true });
+      fs.rmSync(path.join(root, 'yarn.lock'), { force: true });
 
-    console.log(green('✔') + white(' Done.'));
-  });
-}
+      console.log(green('✔') + white(' Done.'));
+    },
+  );
+};
 
 init().catch((e) => {
   console.error(e);
