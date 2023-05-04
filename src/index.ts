@@ -181,7 +181,7 @@ const init = async () => {
     : repoTemplates.find((template) => template.name === argTemplate);
 
   if (!selectedTemplete) {
-    throw new Error(red('✖') + ' Something error. Template not available now.');
+    throw new Error(red('✖') + ' Template not available now.');
   }
 
   const write = (file: string, content: string): void => {
