@@ -1,8 +1,8 @@
+import childProcess from 'node:child_process';
+import path from 'node:path';
+import fs from 'node:fs';
 import { green, red, reset, white } from 'kolorist';
 import minimist from 'minimist';
-import childProcess from 'node:child_process';
-import fs from 'node:fs';
-import path from 'node:path';
 import { Octokit } from 'octokit';
 import prompts from 'prompts';
 
@@ -76,6 +76,7 @@ const defaultTargetDir: string = 'my-project';
 
 const init = async () => {
   console.log('Fetching template...\n');
+
   const repoTemplates = await fetchTemplateRepositories();
 
   const argTargetDir = formatTargetDir(argv._[0]);

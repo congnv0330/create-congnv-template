@@ -1,6 +1,6 @@
 {
   "name": "@congnv0330/create-template",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Quick generate congnv public template",
   "author": "congnv0330",
   "license": "ISC",
@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/congnv0330/create-congnv-template#readme",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "type": "module",
   "files": [
