@@ -1,5 +1,5 @@
 # CONGNV TEMPLATE
-> **Requires** [Node.js](https://nodejs.org/en/) version 16+. **Requires** [Git](https://git-scm.com/) installed.
+> **Requires** [Node.js](https://nodejs.org/en/) version 18+. **Requires** [Git](https://git-scm.com/) installed.
 
 ## Run
 With NPM:
