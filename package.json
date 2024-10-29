@@ -34,10 +34,11 @@
   },
   "devDependencies": {
     "@types/minimist": "^1.2.5",
+    "@types/node": "^18.19.60",
     "@types/prompts": "^2.4.9",
     "kolorist": "^1.8.0",
     "minimist": "^1.2.8",
-    "octokit": "^3.2.1",
+    "octokit": "^4.0.2",
     "prompts": "^2.4.2",
     "unbuild": "^2.0.0"
   }
