@@ -55,7 +55,7 @@ const fetchTemplateRepositories = async (): Promise<ITemplate[]> => {
       headers: {
         'X-GitHub-Api-Version': '2022-11-28',
       },
-      q: 'template:true user:congnv0330',
+      q: 'template:true user:congnv0330 archived:false',
     });
 
     const items: ITemplate[] = response.data.items.map((repo) => ({
@@ -100,6 +100,24 @@ const init = async () => {
     result = await prompts(
       [
         {
+          type: isValidTemplate ? null : 'select',
+          name: 'template',
+          message:
+            typeof argTemplate === 'string' && !isValidTemplate
+              ? reset(
+                  `"${argTemplate}" isn't a valid template. Please choose from below: `,
+                )
+              : reset('Select a template:'),
+          initial: 0,
+          choices: repoTemplates.map((template) => {
+            return {
+              title: template.name,
+              description: template.description ?? '...',
+              value: template,
+            };
+          }),
+        },
+        {
           type: 'text',
           name: 'projectName',
           message: reset('Project name:'),
@@ -138,24 +156,6 @@ const init = async () => {
           initial: () => toValidPackageName(getProjectName()),
           validate: (dir) =>
             isValidPackageName(dir) || 'Invalid package.json name',
-        },
-        {
-          type: isValidTemplate ? null : 'select',
-          name: 'template',
-          message:
-            typeof argTemplate === 'string' && !isValidTemplate
-              ? reset(
-                  `"${argTemplate}" isn't a valid template. Please choose from below: `,
-                )
-              : reset('Select a template:'),
-          initial: 0,
-          choices: repoTemplates.map((template) => {
-            return {
-              title: template.name,
-              description: template.description ?? '...',
-              value: template,
-            };
-          }),
         },
       ],
       {

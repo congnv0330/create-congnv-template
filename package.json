@@ -1,6 +1,6 @@
 {
   "name": "@congnv0330/create-template",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Quick generate congnv public template",
   "author": "congnv0330",
   "license": "ISC",
@@ -34,12 +34,13 @@
   },
   "devDependencies": {
     "@types/minimist": "^1.2.5",
-    "@types/node": "^18.19.60",
+    "@types/node": "^18.19.118",
     "@types/prompts": "^2.4.9",
     "kolorist": "^1.8.0",
     "minimist": "^1.2.8",
-    "octokit": "^4.0.2",
+    "octokit": "^5.0.3",
     "prompts": "^2.4.2",
-    "unbuild": "^2.0.0"
+    "typescript": "^5.8.3",
+    "unbuild": "^3.5.0"
   }
 }
