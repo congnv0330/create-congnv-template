@@ -25,12 +25,14 @@
     "dist",
     "index.js"
   ],
-  "bin": "./index.js",
+  "bin": {
+    "create-template": "index.js"
+  },
   "scripts": {
     "dev": "unbuild --stub",
     "build": "unbuild",
     "typecheck": "tsc --noEmit",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@types/minimist": "^1.2.5",
